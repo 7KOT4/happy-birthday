@@ -2,56 +2,74 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Твій особливий день ✨</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-bg: #fff5f7;
-            --accent-color: #ff4d6d;
-            --text-dark: #2d3436;
-            --gold: #d4af37;
+            --bg-gradient: linear-gradient(180deg, #fff0f3 0%, #ffde balance, #f9dcc4 100%);
+            --accent: #ff4d6d;
+            --accent-light: #ff758f;
+            --text-main: #2d3436;
+            --gold: #dfb73c;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
             font-family: 'Montserrat', sans-serif;
-            background-color: var(--primary-bg);
+            background: var(--bg-gradient);
             height: 100vh;
+            height: -webkit-fill-available; /* Фікс для мобільного Safari */
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
-            color: var(--text-dark);
+            color: var(--text-main);
         }
 
-        /* --- ЕФЕКТ BOKEH (Мерехтливий фон) --- */
-        .background-blobs {
+        /* --- СЯЮЧИЙ ФОН БОКЕ --- */
+        .bokeh-wrap {
             position: absolute;
             width: 100%;
             height: 100%;
             overflow: hidden;
-            z-index: 0;
-            background: linear-gradient(135deg, #fff5f7 0%, #ffeef2 100%);
+            z-index: 1;
         }
 
-        .blob {
+        .bubble {
             position: absolute;
-            background: rgba(255, 77, 109, 0.1);
-            filter: blur(80px);
+            background: rgba(255, 77, 109, 0.15);
             border-radius: 50%;
-            animation: move 20s infinite alternate;
+            filter: blur(60px);
+            animation: floatAround 25s infinite alternate ease-in-out;
+        }
+        .bubble:nth-child(1) { width: 300px; height: 300px; top: -50px; left: -50px; }
+        .bubble:nth-child(2) { width: 250px; height: 250px; bottom: 10%, right: -50px; background: rgba(223, 183, 60, 0.12); animation-delay: -5s; }
+
+        @keyframes floatAround {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, 80px) scale(1.2); }
         }
 
-        .blob:nth-child(1) { width: 400px; height: 400px; top: -100px; left: -100px; }
-        .blob:nth-child(2) { width: 300px; height: 300px; bottom: -50px; right: -50px; background: rgba(212, 175, 55, 0.1); }
-
-        @keyframes move {
-            from { transform: translate(0, 0); }
-            to { transform: translate(100px, 100px); }
+        /* --- ТАЙМЕР (Зверху, акуратний) --- */
+        .timer-badge {
+            position: absolute;
+            top: 20px;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            color: var(--accent);
+            letter-spacing: 1px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            z-index: 100;
+            border: 1px solid rgba(255,255,255,0.4);
         }
 
         /* --- ЕКРАН 1: ПОДАРУНОК --- */
@@ -59,313 +77,290 @@
             position: relative;
             z-index: 10;
             text-align: center;
-            transition: all 0.8s ease;
+            width: 100%;
+            padding: 20px;
+            transition: opacity 0.6s ease, transform 0.6s ease;
         }
 
-        .gift-container {
-            width: 240px;
-            height: 240px;
-            margin: 0 auto 30px;
+        .gift-wrapper {
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 25px;
             cursor: pointer;
             position: relative;
-            perspective: 1000px;
+            animation: giftBounce 3s infinite ease-in-out;
         }
 
-        .gift-box-3d {
+        .gift-box {
             width: 100%;
-            height: 80%;
-            background: var(--accent-color);
+            height: 85%;
+            background: var(--accent);
             position: absolute;
             bottom: 0;
-            border-radius: 0 0 15px 15px;
-            box-shadow: 0 20px 40px rgba(255, 77, 109, 0.3);
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 15px 35px rgba(255, 77, 109, 0.35);
             display: flex;
             justify-content: center;
         }
-
-        /* Золота стрічка */
-        .gift-box-3d::after {
-            content: '';
-            width: 40px;
-            height: 100%;
-            background: var(--gold);
-        }
+        .gift-box::after { content: ''; width: 30px; height: 100%; background: var(--gold); }
 
         .gift-lid {
-            width: 260px;
-            height: 50px;
-            background: #ff758f;
+            width: 200px;
+            height: 35px;
+            background: var(--accent-light);
             position: absolute;
-            top: 35px;
+            top: 15px;
             left: -10px;
             z-index: 2;
-            border-radius: 8px;
-            transition: 0.5s ease;
+            border-radius: 6px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
         }
-
-        .gift-lid::after {
-            content: '';
-            width: 40px;
-            height: 100%;
-            background: var(--gold);
-            margin: 0 auto;
-            display: block;
-        }
-
-        .gift-container:hover .gift-lid { transform: translateY(-15px); }
+        .gift-lid::after { content: ''; width: 30px; height: 100%; background: var(--gold); margin: 0 auto; display: block; }
 
         .instruction {
             font-family: 'Playfair Display', serif;
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             font-style: italic;
-            color: var(--accent-color);
-            animation: pulse 2s infinite;
+            color: var(--accent);
+            opacity: 0.8;
         }
 
-        /* --- ЕКРАН 2: ОСНОВНИЙ КОНТЕНТ --- */
+        @keyframes giftBounce {
+            0%, 100% { transform: translateY(0) rotate(0); }
+            50% { transform: translateY(-10px) rotate(2deg); }
+        }
+
+        /* --- ЕКРАН 2: ПРИВІТАННЯ ДЛЯ МОБІЛКИ --- */
         #main-content {
             display: none;
             opacity: 0;
             width: 100%;
-            max-width: 1100px;
+            height: 100%;
             z-index: 10;
             flex-direction: column;
+            justify-content: space-between; /* Розносить текст вгору, фото вниз */
             align-items: center;
+            padding: 60px 20px 20px;
         }
 
         .greeting-card {
-            background: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.55);
             backdrop-filter: blur(20px);
-            padding: 50px;
-            border-radius: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.05);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 30px 24px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.04);
             text-align: center;
-            margin-bottom: 50px;
-            max-width: 700px;
+            width: 100%;
+            max-width: 450px;
+            margin-top: auto;
+            margin-bottom: auto; /* Центрує карту по вертикалі над конвеєром */
+            transform: scale(0.9);
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         h1 {
             font-family: 'Playfair Display', serif;
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            color: var(--text-dark);
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            color: var(--text-main);
+            line-height: 1.2;
         }
 
         .message {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: #555;
-            margin-bottom: 30px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #4a4a4a;
+            font-weight: 400;
         }
 
-        /* --- КОНВЕЄР (Фото-тікер) --- */
-        .ticker-wrapper {
+        /* --- КОНВЕЄР ФОТО (Ідеально внизу) --- */
+        .ticker-container {
             width: 100vw;
             overflow: hidden;
-            background: rgba(255, 255, 255, 0.3);
-            padding: 30px 0;
-            position: absolute;
-            bottom: 0;
+            padding: 15px 0 25px;
+            margin-top: auto; /* Завжди тулиться до низу екрану */
         }
 
         .ticker-track {
             display: flex;
-            width: calc(250px * 10); /* Ширина карток * кількість */
-            animation: scroll 25s linear infinite;
+            width: calc(160px * 10); /* Ширина карти + відступи */
+            animation: infiniteScroll 20s linear infinite;
         }
 
-        /* Зупинка при наведенні */
-        .ticker-track:hover {
+        .ticker-track:hover, .ticker-track:active {
             animation-play-state: paused;
         }
 
-        .photo-card {
+        .polaroid-card {
             flex-shrink: 0;
-            width: 220px;
-            height: 280px;
+            width: 140px;
+            height: 185px;
             background: white;
-            margin: 0 20px;
-            padding: 12px 12px 40px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            margin: 0 10px;
+            padding: 8px 8px 25px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
             transform: rotate(var(--r));
-            transition: 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .photo-card:hover {
-            transform: rotate(0deg) scale(1.1);
-            z-index: 20;
+        .polaroid-card:hover {
+            transform: rotate(0deg) scale(1.15) translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            z-index: 99;
         }
 
-        .photo-card img {
+        .polaroid-card img {
             width: 100%;
-            height: 200px;
+            height: 130px;
             object-fit: cover;
-            filter: sepia(0.2);
+            border-radius: 2px;
         }
 
-        .photo-card span {
+        .polaroid-card span {
             display: block;
-            margin-top: 15px;
+            margin-top: 8px;
             font-family: 'Playfair Display', serif;
-            font-size: 0.9rem;
-            color: #888;
+            font-size: 0.7rem;
+            text-align: center;
+            color: #777;
         }
 
-        @keyframes scroll {
+        @keyframes infiniteScroll {
             0% { transform: translateX(0); }
-            100% { transform: translateX(calc(-250px * 5)); } /* Прокрутка половини набору */
+            100% { transform: translateX(calc(-160px * 5)); }
         }
 
-        /* --- ТАЙМЕР --- */
-        .timer-badge {
-            position: absolute;
-            top: 30px;
-            right: 30px;
-            background: rgba(255, 255, 255, 0.8);
-            padding: 10px 20px;
-            border-radius: 30px;
-            font-weight: 600;
-            font-size: 0.8rem;
-            color: var(--accent-color);
-            letter-spacing: 1px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        /* --- АНІМАЦІЇ ВИЛЬОТУ КРИШКИ --- */
+        .lid-fly { animation: lidFlyOff 0.8s forwards cubic-bezier(0.19, 1, 0.22, 1); }
+        @keyframes lidFlyOff {
+            to { transform: translateY(-300px) rotate(15deg); opacity: 0; }
         }
 
-        /* --- СТАН: ЧАС ВИЙШОВ --- */
+        .box-sink { animation: boxSinkDown 0.6s ease forwards; }
+        @keyframes boxSinkDown {
+            to { transform: translateY(50px); opacity: 0; }
+        }
+
+        /* --- ОШИБКА: ВРЕМЯ ВЫШЛО --- */
         #expired-section {
             display: none;
             opacity: 0;
             text-align: center;
             z-index: 30;
+            padding: 20px;
         }
+        .expired-title { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: #a0a0a0; }
 
-        .expired-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 4rem;
-            color: #bdc3c7;
-        }
-
-        /* Анімації */
-        @keyframes pulse {
-            0%, 100% { opacity: 0.6; }
-            50% { opacity: 1; transform: scale(1.05); }
-        }
-
-        .lid-fly {
-            animation: flyOff 1s forwards cubic-bezier(0.5, 1, 0.89, 1);
-        }
-
-        @keyframes flyOff {
-            to { transform: translateY(-500px) rotate(20deg); opacity: 0; }
-        }
-
-        .fade-in {
-            animation: fadeIn 1.5s forwards ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-    <div class="background-blobs">
-        <div class="blob"></div>
-        <div class="blob"></div>
+    <div class="bokeh-wrap">
+        <div class="bubble"></div>
+        <div class="bubble"></div>
     </div>
 
-    <div class="timer-badge" id="timer-ui">
-        САМОЗНИЩЕННЯ ЧЕРЕЗ: <span id="clock">24:00:00</span>
+    <div class="timer-badge">
+        ЗНИКНЕ ЧЕРЕЗ: <span id="clock">24:00:00</span>
     </div>
 
+    <!-- ЕКРАН 1: ПОДАРУНОК -->
     <section id="gift-section">
-        <div class="gift-container" onclick="openGift()">
+        <div class="gift-wrapper" onclick="openGift()">
             <div class="gift-lid" id="lid"></div>
-            <div class="gift-box-3d"></div>
+            <div class="gift-box" id="box"></div>
         </div>
-        <p class="instruction">Торкнувшись, ти відкриєш магію...</p>
+        <p class="instruction">Натисни, щоб відкрити магію...</p>
     </section>
 
+    <!-- ЕКРАН 2: КОНТЕНТ -->
     <section id="main-content">
-        <div class="greeting-card">
+        <div class="greeting-card" id="g-card">
             <h1>З Днем Народження! ✨</h1>
             <p class="message">
-                Сьогодні світ стал яскравішим, бо це твій день. Бажаю, щоб кожен твій ранок починався з усмішки, 
-                а кожен вечір завершувався відчуттям абсолютного щастя. Ти надихаєш! <br><br>
-                <b>Ця сторінка — тільки для тебе. І вона зникне разом із цим днем.</b>
+                Сьогодні світ став яскравішим, бо це твій день. Бажаю, щоб кожен твій ранок починався з посмішки, 
+                а кожен вечір завершувався відчуттям абсолютного щастя. Ти неймовірна! <br><br>
+                <b>Ця сторінка створена тільки для тебе. І вона зникне разом із цим днем навсегда.</b>
             </p>
         </div>
 
-        <div class="ticker-wrapper">
+        <!-- КОНВЕЄР З ФОТО КАРТКАМИ (Внизу, окремо від тексту) -->
+        <div class="ticker-container">
             <div class="ticker-track">
-                <div class="photo-card" style="--r: -2deg;">
-                    <img src="https://images.unsplash.com/photo-1513201099495-a636ed47adea?w=500" alt="Moment 1">
+                <div class="polaroid-card" style="--r: -3deg;">
+                    <img src="https://images.unsplash.com/photo-1513201099495-a636ed47adea?w=500" alt="Фото 1">
                     <span>Твій стиль.. ✨</span>
                 </div>
-                <div class="photo-card" style="--r: 3deg;">
-                    <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=500" alt="Moment 2">
+                <div class="polaroid-card" style="--r: 2deg;">
+                    <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=500" alt="Фото 2">
                     <span>Твоя посмішка.. ❤️</span>
                 </div>
-                <div class="photo-card" style="--r: -1deg;">
-                    <img src="https://images.unsplash.com/photo-1513201099495-a636ed47adea?w=500" alt="Moment 3">
+                <div class="polaroid-card" style="--r: -2deg;">
+                    <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=500" alt="Фото 3">
                     <span>Найкращі миті.. 🌸</span>
                 </div>
-                <div class="photo-card" style="--r: 2deg;">
-                    <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=500" alt="Moment 4">
+                <div class="polaroid-card" style="--r: 4deg;">
+                    <img src="https://images.unsplash.com/photo-1504198453319-5ce911bafcde?w=500" alt="Фото 4">
                     <span>Мрій сміливо.. 🚀</span>
                 </div>
-                <div class="photo-card" style="--r: -3deg;">
-                    <img src="https://images.unsplash.com/photo-1513201099495-a636ed47adea?w=500" alt="Moment 5">
+                <div class="polaroid-card" style="--r: -4deg;">
+                    <img src="https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=500" alt="Фото 5">
                     <span>Сяй завжди.. 💎</span>
                 </div>
                 
-                <div class="photo-card" style="--r: -2deg;">
-                    <img src="https://images.unsplash.com/photo-1513201099495-a636ed47adea?w=500" alt="Moment 1">
+                <!-- Дублікат для нескінченної стрічки руху -->
+                <div class="polaroid-card" style="--r: -3deg;">
+                    <img src="https://images.unsplash.com/photo-1513201099495-a636ed47adea?w=500" alt="Фото 1">
                     <span>Твій стиль.. ✨</span>
                 </div>
-                <div class="photo-card" style="--r: 3deg;">
-                    <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=500" alt="Moment 2">
+                <div class="polaroid-card" style="--r: 2deg;">
+                    <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=500" alt="Фото 2">
                     <span>Твоя посмішка.. ❤️</span>
                 </div>
-                <div class="photo-card" style="--r: -1deg;">
-                    <img src="https://images.unsplash.com/photo-1513201099495-a636ed47adea?w=500" alt="Moment 3">
+                <div class="polaroid-card" style="--r: -2deg;">
+                    <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=500" alt="Фото 3">
                     <span>Найкращі миті.. 🌸</span>
                 </div>
-                <div class="photo-card" style="--r: 2deg;">
-                    <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=500" alt="Moment 4">
+                <div class="polaroid-card" style="--r: 4deg;">
+                    <img src="https://images.unsplash.com/photo-1504198453319-5ce911bafcde?w=500" alt="Фото 4">
                     <span>Мрій сміливо.. 🚀</span>
                 </div>
-                <div class="photo-card" style="--r: -3deg;">
-                    <img src="https://images.unsplash.com/photo-1513201099495-a636ed47adea?w=500" alt="Moment 5">
+                <div class="polaroid-card" style="--r: -4deg;">
+                    <img src="https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=500" alt="Фото 5">
                     <span>Сяй завжди.. 💎</span>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- ЕКРАН 3: ЧАС ВИЙШОВ -->
     <section id="expired-section">
         <h1 class="expired-title">Свято минуло... 🍂</h1>
-        <p>Ця сторінка зникла, але спогади залишаться назавжди.</p>
+        <p style="margin-top: 10px; color: #777;">Ця сторінка зникла, але спогади залишаться в серці.</p>
     </section>
 
     <script>
-        // ВКАЖИ ЧАС САМОЗНИЩЕННЯ ТУТ (Формат: РРРР-ММ-ДДTHH:MM:SS)
-        // Наприклад, постав завтрашній день
+        // УКАЖИ ТУТ ДАТУ ЗАКРЫТИЯ САЙТА (Формат: РРРР-ММ-ДДTHH:MM:SS)
         const expirationDate = new Date("2026-06-02T12:00:00"); 
 
         function openGift() {
             document.getElementById('lid').classList.add('lid-fly');
+            document.getElementById('box').classList.add('box-sink');
+            
             setTimeout(() => {
                 document.getElementById('gift-section').style.display = 'none';
-                const main = document.getElementById('main-content');
-                main.style.display = 'flex';
-                setTimeout(() => main.style.opacity = '1', 50);
-                main.classList.add('fade-in');
-            }, 800);
+                const mainContent = document.getElementById('main-content');
+                mainContent.style.display = 'flex';
+                
+                setTimeout(() => {
+                    mainContent.style.opacity = '1';
+                    document.getElementById('g-card').style.transform = 'scale(1)';
+                }, 50);
+            }, 700);
         }
 
         function updateClock() {
@@ -375,7 +370,6 @@
             if (diff <= 0) {
                 document.getElementById('gift-section').style.display = 'none';
                 document.getElementById('main-content').style.display = 'none';
-                document.getElementById('timer-ui').style.display = 'none';
                 const exp = document.getElementById('expired-section');
                 exp.style.display = 'block';
                 setTimeout(() => exp.style.opacity = '1', 50);
