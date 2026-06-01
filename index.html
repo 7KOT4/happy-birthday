@@ -3,135 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Твій особливий день ✨</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+    <title>Нічого собі... ✨</title>
     <style>
         :root {
-            --bg-gradient: linear-gradient(180deg, #fff0f3 0%, #ffde balance, #f9dcc4 100%);
-            --accent: #ff4d6d;
-            --accent-light: #ff758f;
-            --text-main: #2d3436;
-            --gold: #dfb73c;
+            --bg-dark: #0a0a0c;
+            --neon-pink: #ff007f;
+            --neon-purple: #9d4edd;
+            --glass: rgba(18, 18, 24, 0.7);
+            --border-glass: rgba(255, 255, 255, 0.08);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
-            font-family: 'Montserrat', sans-serif;
-            background: var(--bg-gradient);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-dark);
             height: 100vh;
-            height: -webkit-fill-available; /* Фікс для мобільного Safari */
+            color: #fff;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
-            color: var(--text-main);
+            perspective: 1000px;
         }
 
-        /* --- СЯЮЧИЙ ФОН БОКЕ --- */
-        .bokeh-wrap {
+        /* Анімований живий фон з неоновим сяйвом */
+        .neon-bg {
             position: absolute;
             width: 100%;
             height: 100%;
-            overflow: hidden;
             z-index: 1;
+            overflow: hidden;
         }
 
-        .bubble {
+        .glow-circle {
             position: absolute;
-            background: rgba(255, 77, 109, 0.15);
             border-radius: 50%;
-            filter: blur(60px);
-            animation: floatAround 25s infinite alternate ease-in-out;
+            background: radial-gradient(circle, cubic-bezier(0.1, 0.8, 0.3, 1), var(--neon-pink) 0%, transparent 70%);
+            opacity: 0.15;
+            filter: blur(120px);
+            animation: floatGlow 15s infinite alternate ease-in-out;
         }
-        .bubble:nth-child(1) { width: 300px; height: 300px; top: -50px; left: -50px; }
-        .bubble:nth-child(2) { width: 250px; height: 250px; bottom: 10%, right: -50px; background: rgba(223, 183, 60, 0.12); animation-delay: -5s; }
+        .glow-circle:nth-child(1) { width: 500px; height: 500px; top: -10%; left: -10%; }
+        .glow-circle:nth-child(2) { width: 400px; height: 400px; bottom: -5%; right: -5%; background: var(--neon-purple); animation-delay: -5s; }
 
-        @keyframes floatAround {
+        @keyframes floatGlow {
             0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(50px, 80px) scale(1.2); }
+            100% { transform: translate(80px, 50px) scale(1.3); }
         }
 
-        /* --- ТАЙМЕР (Зверху, акуратний) --- */
-        .timer-badge {
+        /* ТАЙМЕР ЗВОРОТНОГО ВІДЛІКУ */
+        .cyber-timer {
             position: absolute;
-            top: 20px;
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: 600;
+            top: 25px;
             font-size: 0.75rem;
-            color: var(--accent);
-            letter-spacing: 1px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--neon-pink);
+            background: rgba(0, 0, 0, 0.5);
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 0, 127, 0.3);
+            box-shadow: 0 0 15px rgba(255, 0, 127, 0.1);
             z-index: 100;
-            border: 1px solid rgba(255,255,255,0.4);
         }
 
-        /* --- ЕКРАН 1: ПОДАРУНОК --- */
-        #gift-section {
+        /* --- ЕКРАН 1: ФУТУРИСТИЧНИЙ ПОДАРУНОК --- */
+        #gift-screen {
             position: relative;
             z-index: 10;
             text-align: center;
-            width: 100%;
-            padding: 20px;
-            transition: opacity 0.6s ease, transform 0.6s ease;
+            transition: opacity 0.5s ease;
         }
 
-        .gift-wrapper {
-            width: 180px;
-            height: 180px;
-            margin: 0 auto 25px;
+        .cube-wrapper {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 40px;
             cursor: pointer;
             position: relative;
-            animation: giftBounce 3s infinite ease-in-out;
+            transform-style: preserve-3d;
+            animation: rotateCube 8s infinite linear;
         }
 
-        .gift-box {
-            width: 100%;
-            height: 85%;
-            background: var(--accent);
+        /* Стильна неонова коробка */
+        .cube-face {
             position: absolute;
-            bottom: 0;
-            border-radius: 0 0 12px 12px;
-            box-shadow: 0 15px 35px rgba(255, 77, 109, 0.35);
-            display: flex;
-            justify-content: center;
-        }
-        .gift-box::after { content: ''; width: 30px; height: 100%; background: var(--gold); }
-
-        .gift-lid {
-            width: 200px;
-            height: 35px;
-            background: var(--accent-light);
-            position: absolute;
-            top: 15px;
-            left: -10px;
-            z-index: 2;
-            border-radius: 6px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-        }
-        .gift-lid::after { content: ''; width: 30px; height: 100%; background: var(--gold); margin: 0 auto; display: block; }
-
-        .instruction {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.2rem;
-            font-style: italic;
-            color: var(--accent);
-            opacity: 0.8;
+            width: 150px;
+            height: 150px;
+            background: rgba(255, 0, 127, 0.05);
+            border: 2px solid var(--neon-pink);
+            box-shadow: 0 0 20px rgba(255, 0, 127, 0.3), inset 0 0 15px rgba(255, 0, 127, 0.2);
         }
 
-        @keyframes giftBounce {
-            0%, 100% { transform: translateY(0) rotate(0); }
-            50% { transform: translateY(-10px) rotate(2deg); }
+        .front  { transform: translateZ(75px); }
+        .back   { transform: rotateY(180deg) translateZ(75px); }
+        .left   { transform: rotateY(-90deg) translateZ(75px); border-color: var(--neon-purple); }
+        .right  { transform: rotateY(90deg) translateZ(75px); border-color: var(--neon-purple); }
+        .top    { transform: rotateX(90deg) translateZ(75px); }
+        .bottom { transform: rotateX(-90deg) translateZ(75px); }
+
+        @keyframes rotateCube {
+            0% { transform: rotateX(0deg) rotateY(0deg); }
+            100% { transform: rotateX(360deg) rotateY(360deg); }
         }
 
-        /* --- ЕКРАН 2: ПРИВІТАННЯ ДЛЯ МОБІЛКИ --- */
+        .neon-btn {
+            font-size: 1rem;
+            color: #fff;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            text-shadow: 0 0 10px var(--neon-pink);
+            animation: pulseText 1.5s infinite;
+        }
+
+        @keyframes pulseText {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.03); }
+        }
+
+        /* --- ЕКРАН 2: ПРЕМІУМ КОНТЕНТ (ГЛАССМОРФІЗМ) --- */
         #main-content {
             display: none;
             opacity: 0;
@@ -139,197 +133,191 @@
             height: 100%;
             z-index: 10;
             flex-direction: column;
-            justify-content: space-between; /* Розносить текст вгору, фото вниз */
+            justify-content: space-between;
             align-items: center;
-            padding: 60px 20px 20px;
+            padding: 80px 20px 40px;
+            transition: opacity 1s ease;
         }
 
-        .greeting-card {
-            background: rgba(255, 255, 255, 0.55);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            padding: 30px 24px;
-            border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.04);
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            padding: 35px 25px;
+            border-radius: 24px;
+            border: 1px solid var(--border-glass);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
             text-align: center;
             width: 100%;
-            max-width: 450px;
+            max-width: 420px;
+            margin-bottom: auto;
             margin-top: auto;
-            margin-bottom: auto; /* Центрує карту по вертикалі над конвеєром */
-            transform: scale(0.9);
-            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         h1 {
-            font-family: 'Playfair Display', serif;
             font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            background: linear-gradient(45deg, #fff 30%, var(--neon-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             margin-bottom: 15px;
-            color: var(--text-main);
-            line-height: 1.2;
         }
 
         .message {
             font-size: 0.95rem;
             line-height: 1.6;
-            color: #4a4a4a;
-            font-weight: 400;
+            color: #b3b3b3;
+            font-weight: 300;
         }
 
-        /* --- КОНВЕЄР ФОТО (Ідеально внизу) --- */
-        .ticker-container {
-            width: 100vw;
-            overflow: hidden;
-            padding: 15px 0 25px;
-            margin-top: auto; /* Завжди тулиться до низу екрану */
-        }
-
-        .ticker-track {
+        /* --- 3D КОНВЕЄР ФОТОГРАФІЙ (Голограма) --- */
+        .carousel-container {
+            width: 100%;
+            height: 220px;
+            position: relative;
+            margin-top: auto;
             display: flex;
-            width: calc(160px * 10); /* Ширина карти + відступи */
-            animation: infiniteScroll 20s linear infinite;
+            justify-content: center;
+            align-items: center;
         }
 
-        .ticker-track:hover, .ticker-track:active {
+        .carousel-track {
+            position: relative;
+            width: 130px;
+            height: 180px;
+            transform-style: preserve-3d;
+            animation: spinCarousel 25s infinite linear;
+            transition: animation-play-state 0.3s;
+        }
+
+        /* Зупинка при наведенні чи тапі */
+        .carousel-container:hover .carousel-track,
+        .carousel-container:active .carousel-track {
             animation-play-state: paused;
         }
 
-        .polaroid-card {
-            flex-shrink: 0;
-            width: 140px;
-            height: 185px;
-            background: white;
-            margin: 0 10px;
-            padding: 8px 8px 25px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-            transform: rotate(var(--r));
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        .carousel-item {
+            position: absolute;
+            width: 130px;
+            height: 180px;
+            left: 0;
+            top: 0;
+            background: #121216;
+            border: 1px solid var(--border-glass);
+            padding: 8px 8px 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            transition: transform 0.4s ease, border-color 0.4s ease;
+            transform: rotateY(calc(var(--i) * 72deg)) translateZ(200px); /* 3D Радіус розльоту карток */
         }
 
-        .polaroid-card:hover {
-            transform: rotate(0deg) scale(1.15) translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
-            z-index: 99;
+        /* Мобільна адаптація для радіусу 3D, щоб не вилазило за екран */
+        @media (max-width: 480px) {
+            .carousel-item {
+                transform: rotateY(calc(var(--i) * 72deg)) translateZ(140px);
+            }
         }
 
-        .polaroid-card img {
+        .carousel-item:hover {
+            border-color: var(--neon-pink);
+            transform: rotateY(calc(var(--i) * 72deg)) translateZ(230px) scale(1.1);
+            box-shadow: 0 0 25px rgba(255, 0, 127, 0.3);
+        }
+
+        @media (max-width: 480px) {
+            .carousel-item:hover {
+                transform: rotateY(calc(var(--i) * 72deg)) translateZ(160px) scale(1.1);
+            }
+        }
+
+        .carousel-item img {
             width: 100%;
             height: 130px;
             object-fit: cover;
-            border-radius: 2px;
+            border-radius: 8px;
         }
 
-        .polaroid-card span {
+        .carousel-item span {
             display: block;
             margin-top: 8px;
-            font-family: 'Playfair Display', serif;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             text-align: center;
-            color: #777;
+            color: #888;
+            letter-spacing: 0.5px;
         }
 
-        @keyframes infiniteScroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(calc(-160px * 5)); }
+        @keyframes spinCarousel {
+            from { transform: rotateY(0deg); }
+            to { transform: rotateY(360deg); }
         }
 
-        /* --- АНІМАЦІЇ ВИЛЬОТУ КРИШКИ --- */
-        .lid-fly { animation: lidFlyOff 0.8s forwards cubic-bezier(0.19, 1, 0.22, 1); }
-        @keyframes lidFlyOff {
-            to { transform: translateY(-300px) rotate(15deg); opacity: 0; }
-        }
-
-        .box-sink { animation: boxSinkDown 0.6s ease forwards; }
-        @keyframes boxSinkDown {
-            to { transform: translateY(50px); opacity: 0; }
-        }
-
-        /* --- ОШИБКА: ВРЕМЯ ВЫШЛО --- */
+        /* --- ЕКРАН 3: САМОЗНИЩЕННЯ --- */
         #expired-section {
             display: none;
             opacity: 0;
             text-align: center;
             z-index: 30;
-            padding: 20px;
         }
-        .expired-title { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: #a0a0a0; }
+        .expired-title { font-size: 2.5rem; font-weight: 700; color: #333; text-shadow: 0 0 10px rgba(0,0,0,0.8); }
 
         .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-    <div class="bokeh-wrap">
-        <div class="bubble"></div>
-        <div class="bubble"></div>
+    <div class="neon-bg">
+        <div class="glow-circle"></div>
+        <div class="glow-circle"></div>
     </div>
 
-    <div class="timer-badge">
-        ЗНИКНЕ ЧЕРЕЗ: <span id="clock">24:00:00</span>
+    <div class="cyber-timer">
+        SYSTEM_DESTROY_IN: <span id="clock">24:00:00</span>
     </div>
 
-    <!-- ЕКРАН 1: ПОДАРУНОК -->
-    <section id="gift-section">
-        <div class="gift-wrapper" onclick="openGift()">
-            <div class="gift-lid" id="lid"></div>
-            <div class="gift-box" id="box"></div>
+    <!-- ЕКРАН 1: НЕОНОВИЙ КУБ -->
+    <section id="gift-screen">
+        <div class="cube-wrapper" onclick="explodeGift()">
+            <div class="cube-face front"></div>
+            <div class="cube-face back"></div>
+            <div class="cube-face left"></div>
+            <div class="cube-face right"></div>
+            <div class="cube-face top"></div>
+            <div class="cube-face bottom"></div>
         </div>
-        <p class="instruction">Натисни, щоб відкрити магію...</p>
+        <button class="neon-btn" onclick="explodeGift()">Активувати подарунок</button>
     </section>
 
-    <!-- ЕКРАН 2: КОНТЕНТ -->
+    <!-- ЕКРАН 2: ТРИВИМІРНИЙ КОНТЕНТ -->
     <section id="main-content">
-        <div class="greeting-card" id="g-card">
-            <h1>З Днем Народження! ✨</h1>
+        <div class="glass-card">
+            <h1>З Днем Народження!</h1>
             <p class="message">
-                Сьогодні світ став яскравішим, бо це твій день. Бажаю, щоб кожен твій ранок починався з посмішки, 
-                а кожен вечір завершувався відчуттям абсолютного щастя. Ти неймовірна! <br><br>
-                <b>Ця сторінка створена тільки для тебе. І вона зникне разом із цим днем навсегда.</b>
+                Сьогодні особливий момент. Бажаю, щоб твоє життя було наповнене яскравими подіями, щирими людьми та шаленою енергією. Ти заслуговуєш на найкраще. Сяй, надихай та рухайся тільки вперед! <br><br>
+                <b>Цей доступ ексклюзивний — рівно через 24 години посилання перестане існувати.</b>
             </p>
         </div>
 
-        <!-- КОНВЕЄР З ФОТО КАРТКАМИ (Внизу, окремо від тексту) -->
-        <div class="ticker-container">
-            <div class="ticker-track">
-                <div class="polaroid-card" style="--r: -3deg;">
+        <!-- 3D ГОЛОГРАФІЧНИЙ КОНВЕЄР (Фото крутяться по колу в просторі) -->
+        <div class="carousel-container">
+            <div class="carousel-track">
+                <div class="carousel-item" style="--i: 0;">
                     <img src="https://images.unsplash.com/photo-1513201099495-a636ed47adea?w=500" alt="Фото 1">
                     <span>Твій стиль.. ✨</span>
                 </div>
-                <div class="polaroid-card" style="--r: 2deg;">
+                <div class="carousel-item" style="--i: 1;">
                     <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=500" alt="Фото 2">
                     <span>Твоя посмішка.. ❤️</span>
                 </div>
-                <div class="polaroid-card" style="--r: -2deg;">
+                <div class="carousel-item" style="--i: 2;">
                     <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=500" alt="Фото 3">
                     <span>Найкращі миті.. 🌸</span>
                 </div>
-                <div class="polaroid-card" style="--r: 4deg;">
+                <div class="carousel-item" style="--i: 3;">
                     <img src="https://images.unsplash.com/photo-1504198453319-5ce911bafcde?w=500" alt="Фото 4">
                     <span>Мрій сміливо.. 🚀</span>
                 </div>
-                <div class="polaroid-card" style="--r: -4deg;">
-                    <img src="https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=500" alt="Фото 5">
-                    <span>Сяй завжди.. 💎</span>
-                </div>
-                
-                <!-- Дублікат для нескінченної стрічки руху -->
-                <div class="polaroid-card" style="--r: -3deg;">
-                    <img src="https://images.unsplash.com/photo-1513201099495-a636ed47adea?w=500" alt="Фото 1">
-                    <span>Твій стиль.. ✨</span>
-                </div>
-                <div class="polaroid-card" style="--r: 2deg;">
-                    <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=500" alt="Фото 2">
-                    <span>Твоя посмішка.. ❤️</span>
-                </div>
-                <div class="polaroid-card" style="--r: -2deg;">
-                    <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=500" alt="Фото 3">
-                    <span>Найкращі миті.. 🌸</span>
-                </div>
-                <div class="polaroid-card" style="--r: 4deg;">
-                    <img src="https://images.unsplash.com/photo-1504198453319-5ce911bafcde?w=500" alt="Фото 4">
-                    <span>Мрій сміливо.. 🚀</span>
-                </div>
-                <div class="polaroid-card" style="--r: -4deg;">
+                <div class="carousel-item" style="--i: 4;">
                     <img src="https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=500" alt="Фото 5">
                     <span>Сяй завжди.. 💎</span>
                 </div>
@@ -339,28 +327,32 @@
 
     <!-- ЕКРАН 3: ЧАС ВИЙШОВ -->
     <section id="expired-section">
-        <h1 class="expired-title">Свято минуло... 🍂</h1>
-        <p style="margin-top: 10px; color: #777;">Ця сторінка зникла, але спогади залишаться в серці.</p>
+        <h1 class="expired-title">ACCESS_DENIED (Час вийшов)</h1>
+        <p style="margin-top: 10px; color: #555; font-size: 0.9rem;">Файли автоматично видалені з сервера.</p>
     </section>
 
     <script>
-        // УКАЖИ ТУТ ДАТУ ЗАКРЫТИЯ САЙТА (Формат: РРРР-ММ-ДДTHH:MM:SS)
+        // УКАЖИ ДАТУ ЗАКРЫТИЯ САЙТА ТУТ
         const expirationDate = new Date("2026-06-02T12:00:00"); 
 
-        function openGift() {
-            document.getElementById('lid').classList.add('lid-fly');
-            document.getElementById('box').classList.add('box-sink');
+        function explodeGift() {
+            // Ефект вибуху куба через різке збільшення швидкості перед зникненням
+            const cube = document.querySelector('.cube-wrapper');
+            cube.style.animation = 'rotateCube 0.3s infinite linear';
             
             setTimeout(() => {
-                document.getElementById('gift-section').style.display = 'none';
-                const mainContent = document.getElementById('main-content');
-                mainContent.style.display = 'flex';
+                document.getElementById('gift-section').style.opacity = '0';
                 
                 setTimeout(() => {
-                    mainContent.style.opacity = '1';
-                    document.getElementById('g-card').style.transform = 'scale(1)';
-                }, 50);
-            }, 700);
+                    document.getElementById('gift-section').style.display = 'none';
+                    const mainContent = document.getElementById('main-content');
+                    mainContent.style.display = 'flex';
+                    
+                    setTimeout(() => {
+                        mainContent.style.opacity = '1';
+                    }, 50);
+                }, 400);
+            }, 500);
         }
 
         function updateClock() {
@@ -370,9 +362,8 @@
             if (diff <= 0) {
                 document.getElementById('gift-section').style.display = 'none';
                 document.getElementById('main-content').style.display = 'none';
-                const exp = document.getElementById('expired-section');
-                exp.style.display = 'block';
-                setTimeout(() => exp.style.opacity = '1', 50);
+                document.getElementById('expired-section').style.display = 'block';
+                setTimeout(() => document.getElementById('expired-section').style.opacity = '1', 50);
                 return;
             }
 
