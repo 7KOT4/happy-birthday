@@ -201,7 +201,6 @@
             animation: spinCarousel 20s infinite linear;
         }
 
-        /* Рух стопається, коли відкрите велике фото */
         .paused-animation {
             animation-play-state: paused !important;
         }
@@ -311,6 +310,8 @@
 </head>
 <body>
 
+    <audio id="bg-music" src="music.mp3" loop></audio>
+
     <div class="neon-bg">
         <div class="glow-circle"></div>
         <div class="glow-circle"></div>
@@ -380,7 +381,7 @@
     </section>
 
     <script>
-        // ВСТАВ СЮДИ СВОЮ ДАТУ ДЛЯ СУТОК (Формат: РРРР-ММ-ДДTHH:MM:SS)
+        // ВКАЖИ ТУТ ДАТУ ЗАКРЫТИЯ САЙТА (Зараз стоїть червень 2027 для тестів)
         const expirationDate = new Date("2027-06-01T12:00:00"); 
 
         let isExploded = false;
@@ -388,6 +389,10 @@
         function explodeGift() {
             if (isExploded) return;
             isExploded = true;
+
+            // Запуск музики у момент кліку
+            const audio = document.getElementById('bg-music');
+            audio.play().catch(error => console.log("Звук заблоковано системою:", error));
 
             const cube = document.getElementById('cube-mesh');
             const giftSection = document.getElementById('gift-section');
@@ -413,7 +418,6 @@
             }, 400);
         }
 
-        // Логіка збільшення фотографій
         function zoomImage(imgSrc) {
             const lightbox = document.getElementById('photo-lightbox');
             const zoomedImg = document.getElementById('zoomed-image');
@@ -421,7 +425,7 @@
 
             zoomedImg.src = imgSrc;
             lightbox.classList.add('active');
-            spinner.classList.add('paused-animation'); // Стопаємо крутіння конвеєра
+            spinner.classList.add('paused-animation'); 
         }
 
         function closeZoom() {
@@ -430,7 +434,7 @@
 
             lightbox.classList.remove('active');
             setTimeout(() => {
-                spinner.classList.remove('paused-animation'); // Запускаємо конвеєр знову
+                spinner.classList.remove('paused-animation'); 
             }, 300);
         }
 
@@ -441,8 +445,9 @@
             if (diff <= 0) {
                 document.getElementById('gift-section').style.display = 'none';
                 document.getElementById('main-content').style.display = 'none';
-                document.getElementById('expired-section').style.display = 'block';
-                setTimeout(() => document.getElementById('expired-section').style.opacity = '1', 50);
+                const exp = document.getElementById('expired-section');
+                exp.style.display = 'block';
+                setTimeout(() => exp.style.opacity = '1', 50);
                 return;
             }
 
